@@ -1,0 +1,478 @@
+#include<stdio.h>
+#include<string.h>
+#include<stdlib.h> 
+
+#define	DATA_NUM	256	//会员人数上限
+#define DATA_FILE "data.txt"
+#define sex1 "男生"
+#define sex2 "女生"
+#define car1 "公务人员"
+#define car2 "服务业"
+#define car3 "科技产业"
+#define car4 "学生"
+#define car5 "自由业"
+#define car6 "保险业"
+     
+struct DATA
+{
+  	int		id;
+	char	name[10];
+	int		psd;
+	int		sex;
+	char	bir[10];
+	int		age;
+	int		carrier;
+	char	habit[80];	
+	char	email[80];
+};
+
+int		addmem(struct DATA data[],FILE *fp_data,int i);	//新增会员函数 
+int		match(struct DATA data[],int sex_id,int age_down,int age_up,int carrier_id,int count);	//搜寻比对
+int		edit(struct DATA data[],int id);	//修改基本数据
+void	initdata(struct DATA data[]);	//初始化资料
+void	showmem(struct DATA data[],int a);	//查询会员数据
+int		loaddata(struct DATA data[],FILE *fp_data);	//加载会员数据
+int		check_mem(struct DATA data[],int id);	//检查是否有该会员
+void	save(struct DATA data[],FILE *fp_data,int i);	//储存新增数据至档案
+void 	whichcar(char car[],int car_id); //决定car[]内容
+void 	whichsex(char sex[],int sex_id); //决定sex[]内容   
+int 	i;
+FILE 	*fp_data;
+
+int main()
+{
+	int	mem;		
+    int  num;
+	int	id;
+	int	choice;		//选择功能
+	int	sex_id;		//查询性别
+	int	age_down;	//查询条件年龄下限
+	int	age_up;		//查询条件年龄上限
+	int	carrier_id;	//查询职业
+	int	n;
+	int	tem;		//会员输入密码
+	int	a;		//欲查询之会员编号
+	int	count;		//资料笔数
+	struct DATA data[256];
+	
+	fp_data=fopen(DATA_FILE,"w+");//改为
+	initdata(data);
+	count=loaddata(data,fp_data);
+	fclose(fp_data);
+    
+    printf("===============================================\n");
+    printf("|                     欢迎光临                 |\n");
+    printf("|                 HAPPY!!交友中心              |\n");
+    printf("|                不限年龄,性别，工作….          |\n");
+    printf("|                   欢迎您的加入                |\n");
+    printf("===============================================\n");
+
+	while(1)
+{ 
+	   printf("请选择:1.会员登入 2.新会员加入 >");
+       scanf("%d",&num);
+       switch(num)
+       {
+            case 1:
+                  printf("请输入会员编号:");
+                  scanf("%d",&id);
+                  mem=check_mem(data,id);
+                  if(mem>0)
+                  {
+                        printf("请输入会员密码>");
+                        for(i=1;i<=3;i++)       //允许输入三次密码
+                        {
+                            scanf("%d",&tem);
+                            if(tem==data[id].psd) break;
+                            if(i!=3)  printf("密码错误，请重新输入>");
+                         }
+                                                                                
+                         if(i>3)
+                         {
+                             printf("输入错误超过三次!拒绝登入!");
+                             exit(1);
+                          }else{
+                             printf("密码正确，欢迎登入!!!\n");
+                                                                               
+                          }
+                  }else{
+                          printf("查无此会员编号，请重新输入\n");
+                          continue;
+                  }
+                  break;
+            case 2:
+                  printf("新会员，请问是否注册(1)是；(2)否，离开程序；(3)重新输入>");
+                  scanf("%d",&n);
+                  while(n!=1&&n!=2&&n!=3)
+                  {
+                      printf("请输入正确选项>");
+                      scanf("%d",&n);
+                  }
+           		  switch(n)
+                  {
+                        case 1: fp_data=fopen(DATA_FILE,"w");   //新增账号
+                              i=addmem(data,fp_data,i);
+                              showmem(data,i);
+                              save(data,fp_data,i);
+                              fclose(fp_data);
+                              printf("新增成功\\n");
+                              break;
+                       case 2:  printf("程序结束\n");           //结束离开
+                              exit(1);
+                              break;
+                       case 3:  continue;                     //重新输入
+                               break;
+                  }
+                  break;
+       }
+	while(1)
+	{
+		int j;
+		printf("\n");
+		printf("╔════功能表════╗\n");
+		printf("╠═══════════╣\n");
+		printf("║1.match		║\n");
+		printf("║2.修改基本数据   	║\n");
+		printf("║3.查询会员数据	║\n");
+		printf("║4.离开		║\n");
+		printf("╚═══════════╝\n");
+		printf("请选择功能: ");
+		scanf("%d",&choice);
+		switch(choice)
+		{
+		case 1:	printf("请输入比对条件");		//match
+				printf("性别：(1)男;(2)女>");
+				scanf("%d",&sex_id);
+				while(sex_id!=1&&sex_id!=2)
+				{
+					printf("请输入正确选项>");
+					scanf("%d",&sex_id);
+				}
+				printf("年龄下限>");
+				scanf("%d",&age_down);
+				printf("年龄上限>");
+				scanf("%d",&age_up);
+				printf("职业类别：(1)公务人员;(2)服务业;(3)科技产业;(4)学生;(5)自由业;(6)保险业>");
+				scanf("%d",&carrier_id);
+ while(carrier_id!=1&&carrier_id!=2&&carrier_id!=3&&carrier_id!=4&&carrier_id!=5&&carrier_id!=6)
+				{
+					printf("请输入正确选项");
+					scanf("%d",&carrier_id);
+				}
+				match(data,sex_id,age_down,age_up,carrier_id,count);	
+				printf("\n");
+				break;
+		case 2:	edit(data,id);		//edit
+				break;
+		case 3:	printf("请输入欲查询者会员编号＞");	//查询
+				scanf("%d",&a);
+				while(data[a].id<0)
+				{
+					printf("无此会员，请重新输入");
+					scanf("%d",&a);
+				}
+				showmem(data,a);
+				break;
+		case 4:	exit(1);	break;			//离开程序
+		}	                                   
+	}
+ }
+ return 0;
+}
+
+void initdata(struct DATA data[])	// 初使化数据子程序
+{
+	int i;
+	for(i=1;i<=DATA_NUM;i++)
+	{
+		data[i].id=-1;
+	}
+}		
+//加载数据子程序
+int loaddata(struct DATA data[],FILE *fp_data)
+{
+	int	count=0;
+	while(!feof(fp_data))
+	{
+		count=count+1;
+		fscanf(fp_data,"%d\t",&data[count].id);
+		fscanf(fp_data,"%s\t",&data[count].name);
+		fscanf(fp_data,"%d\t",&data[count].psd);
+		fscanf(fp_data,"%d\t",&data[count].sex);
+		fscanf(fp_data,"%s\t",&data[count].bir);
+		fscanf(fp_data,"%d\t",&data[count].age);
+		fscanf(fp_data,"%d\t",&data[count].carrier);
+		fscanf(fp_data,"%s\t",&data[count].habit);
+		fscanf(fp_data,"%s\t",&data[count].email);
+	}
+	return count;
+}
+//增加会员子程序
+int addmem(struct DATA data[],FILE *fp_data,int i)
+{
+	for(i=1;i<=256;i++)
+	{
+		if(data[i].id<0)
+		{
+			data[i].id=i;
+			printf("您的会员编号是%3d",i); 		
+			printf("\n");
+			printf("请输入姓名>");
+			scanf("%s",&data[i].name);		
+			printf("\n");
+			printf("请输入密码>");				
+			scanf("%d",&data[i].psd);		
+			printf("\n");
+			printf("请输入性别：(1)男(2)女>");			printf("\n");
+			scanf("%d",&data[i].sex);		
+			while(data[i].sex!=1&&data[i].sex!=2)
+			{
+				printf("请输入正确选项>");
+				scanf("%d",&data[i].sex);
+			}
+			printf("\n");
+			printf("请输入生日(ex:公元/月/日)>");	
+			scanf("%s",&data[i].bir);		
+			printf("\n");
+			printf("请输入年龄>");			
+			scanf("%d",&data[i].age);		
+			printf("\n");
+			printf("请选择职业类别\n"); 
+			printf("(1)公务人员(2)服务业(3)科技产业(4)学生(5)自由业(6)保险业\n");
+			scanf("%d",&data[i].carrier);		
+			while(data[i].carrier<1&&data[i].carrier>6)
+			{
+				printf("请输入正确选项>");
+				scanf("%d",&data[i].carrier);
+			}
+			printf("\n");
+			printf("请输入兴趣>");			
+			scanf("%s",&data[i].habit);		
+			printf("\n");
+			printf("请输入电子邮寄信箱>");
+			scanf("%s",&data[i].email);		
+			printf("\n");
+			return i;
+			break;
+		}
+	}	
+}
+//match，允许使用者输入搜寻条件，从数据中找出符合之会员
+int match(struct DATA data[],int sex_id,int age_down,int age_up,int carrier_id,int count)
+{
+	int i,j=0;
+	char	sex[20];
+	char	car[20];
+	printf("会员编号\t姓名\t年龄\t职业\t兴趣\t\n");
+	printf("===============================================\n");
+	for(i=1;i<=count;i++)
+	{
+		if(sex_id==data[i].sex&&data[i].age>=age_down&&data[i].age<=age_up&&carrier_id==data[i].carrier)	//判断条件
+		{
+			whichsex(sex,data[i].sex);
+			whichcar(car,data[i].carrier);                        
+			printf("%3d\t\t%s\t%d\t%s\t%s\n",data[i].id,data[i].name,data[i].age,car,data[i].habit);
+			j=j+1;
+		}
+	}
+	if(j==0) //若j=0表示判断条件之if判断式未被做到, 即查无资料	
+	{	
+		printf("无符合条件\n");
+	}
+	return 1;
+}
+// 是否为会员子程序
+int check_mem(struct DATA data[],int id)
+{	
+	int i;
+	for(i=1;i<=256;i++)
+	{
+		if(data[id].id==id)
+		{
+			return 1;
+			break;
+		}else{
+			return -1;
+		}	
+	}	
+}
+//显示查询会员数据子程序
+void showmem(struct DATA data[],int a)
+{
+	
+	char	sex[20];
+	char	car[20];
+	whichsex(sex,data[a].sex);
+	whichcar(car,data[a].carrier);
+	                        
+	printf("\n");
+	printf("会员编号：%d\n",data[a].id);
+	printf("姓    名：%s\n",data[a].name);
+	printf("姓    别：%s\n",sex);
+	printf("生    日：%s\n",data[a].bir);
+	printf("年    龄：%d\n",data[a].age);
+	printf("职    业：%s\n",car);
+	printf("兴    趣：%s\n",data[a].habit);
+	printf("email   ：%s\n",data[a].email);
+}
+// 储存新增会员数据子程序
+void save(struct DATA data[],FILE *fp_data ,int i)
+{
+	int index;
+	
+	for(index=1;index<=i;index++)
+	{
+		fprintf(fp_data,"%d\t",data[index].id);
+		fprintf(fp_data,"%s\t",data[index].name);
+		fprintf(fp_data,"%d\t",data[index].psd);
+		fprintf(fp_data,"%d\t",data[index].sex);
+		fprintf(fp_data,"%s\t",data[index].bir);
+		fprintf(fp_data,"%d\t",data[index].age);
+		fprintf(fp_data,"%d\t",data[index].carrier);
+		fprintf(fp_data,"%s\t",data[index].habit);
+		fprintf(fp_data,"%s\t",data[index].email);
+		fprintf(fp_data,"\n");
+	}
+}
+//决定sex[]内容子程序
+void whichsex(char sex[],int sex_id)
+{
+    switch(sex_id)
+    {
+     case 1 : strcpy(sex,sex1); 
+      	      break;
+     case 2 : strcpy(sex,sex2);
+              break;       
+    }	  
+}
+//决定car[]内容子程序
+void whichcar(char car[],int car_id)  
+{
+	switch(car_id)    
+	{
+		case 1 :strcpy(car,car1);
+			  break;
+		case 2 :strcpy(car,car2);
+			  break;
+		case 3 :strcpy(car,car3); 
+			  break;
+		case 4 :strcpy(car,car4);   
+			  break;
+		case 5 :strcpy(car,car5);    
+			  break;
+		case 6 :strcpy(car,car6); 
+			  break; 
+	}
+}
+//修改数据子程序
+int edit(struct DATA data[],int id)
+{
+	char	cho;
+	char	sex[20];
+	char	car[20];
+	
+	printf("姓   名：%s\t修改[N/Y]>",data[id].name);
+	scanf("%s",&cho);
+	switch(cho)
+	{
+		case 'y' :
+  		case 'Y' :printf("新姓名：");
+			  scanf("%s",data[id].name);
+			  break;
+		case 'n' :
+		case 'N' :break;
+	}
+	printf("密   码：%d\t修改[N/Y]>",data[id].psd);
+	scanf("%s",&cho);
+	switch(cho)
+	{
+		case 'y':
+		case 'Y':printf("新密码：");
+			  scanf("%d",&data[id].psd);
+			  break;
+		case 'n':
+		case 'N':break;
+	}
+	whichsex(sex,data[id].sex);
+	printf("性   别：%s\t修改[N/Y]>",sex);
+	scanf("%s",&cho);
+	switch(cho)
+	{
+		case 'y':
+		case 'Y':
+			 printf("性别：(1.男;2.女");
+			 scanf("%d",&data[id].sex);
+			 while(data[id].sex!=1&&data[id].sex!=2)
+			 {
+			 	printf("请输入正确选项>");
+			 	scanf("%d",data[id].sex);
+			 }
+			 break;
+		case 'n':
+		case 'N':break;
+	}
+	printf("生日：%s\t修改[N/Y]>",data[id].bir);
+	scanf("%s",&cho);
+	switch(cho)
+	{
+		case 'y':
+		case 'Y':printf("生日(公元/月/日)：");
+			 scanf("%s",&data[id].bir);
+			 break;
+		case 'n':
+		case 'N':break;
+	}
+	printf("年龄：%d\t修改[N/Y]>",data[id].age);
+	scanf("%s",&cho);
+	switch(cho)
+	{
+		case 'y':
+		case 'Y':printf("年龄：");
+			 scanf("%d",data[id].age);
+			 break;
+		case 'n':
+		case 'N':break;
+	}
+	whichcar(car,data[id].carrier);
+	printf("职业：%s\t修改[N/Y]>",car);
+	scanf("%s",&cho);
+	switch(cho)
+	{
+		case 'y':
+		case 'Y':printf("请输入职业类别代码：\n");
+			 printf("(1)公务人员(2)服务业(3)科技产业(4)学生(5)自由业(6)保险业");
+			 scanf("%d",&data[id].carrier);
+			 while(data[id].carrier!=1&&data[id].carrier!=6&&data[id].carrier!=2&&data[id].carrier!=3&&data[id].carrier!=4&&data[id].carrier!=5)
+			 {
+			 	printf("请输入正确选项>");
+			 	scanf("%d",&data[id].carrier);
+			 }
+			 break;
+		case 'n':
+		case 'N':break;
+	}
+	printf("兴趣：%s\t修改[N/Y]>",data[id].habit);
+	scanf("%s",&cho);
+	switch(cho)
+	{
+		case 'y':
+		case 'Y':printf("请输入兴趣：");
+			 scanf("%s",data[id].habit);
+			 break;
+		case 'n':
+		case 'N':break;
+	}
+	printf("email：%s\t修改[N/Y]>",data[id].email);
+	scanf("%s",&cho);
+	switch(cho)
+	{
+		case 'y':
+		case 'Y':printf("请输入email：");
+			 scanf("%s",data[id].email);
+			 break;
+		case 'n':
+		case 'N':break;
+	}
+	save(data,fp_data,i);
+	return 1;
+}  
