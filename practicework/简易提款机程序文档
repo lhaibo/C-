@@ -1,0 +1,521 @@
+
+
+简易提款机
+
+
+目录：
+1.系统介绍与系统简述-------------------------------------------	3
+2.数据及档案结构说明-------------------------------------------	3
+3.主程序解析-------------------------------------------------------	4
+4.子程序解析-------------------------------------------------------	7
+5.程序执行范例----------------------------------------------------	14
+6.完整程序代码和批注----------------------------------------------	17
+
+一、系统介绍与系统简述
+	简易提款机是一个简化的提款机系统，它提供以下几个功能：
+存簿提款：提供数据库中客户邮局提款功能。
+跨行提款：提供数据库中客户跨行提款功能。
+查询余额：提供数据库客户查询数据库中自己的金额。
+
+有了以上的假设，我们应该要有以下这些档案：
+会员档：用来提供客户信息，档案每一行应包含四个字段：会员代码、会员账号、会员姓名、会员存款。
+member2.txt
+1 22	9032	15468000
+2 11	9031	95468000
+3 33	9030	25468000
+4 44	9034	55468000
+5 55	9035	45298000
+
+二、数据及档案结构说明
+在程序当中，我们建构并使用了一个数据结构：会员数据结构(member structure)，用来纪录每一笔会员数据，每一笔会员数据应含有以下的字段：
+代码(int num)
+账号（int ID）
+密码（long int password）
+存款（long int money），表示会员账号内存款。
+图示概念图如下：
+会员(member)
+字段意义	字段名称
+代码	  int  num
+账号	  int  id
+密码	  Long int password
+存款	  Long int  money
+
+三、主程序解析
+主程序main()
+功能：根据使用者的选择而执行相对应的动作（1.提款，2.转帐，3.查询纪录）。
+流程图
+
+
+
+程序代码
+void main()
+{	
+long int PW=0;
+	int a,j,i,l;		/*a试判断ID与密码用的*/
+	int id;
+	fp=fopen("member2.txt","r"); 
+	q=readfile(guide);		/*读入档案,共有q-1组*/
+	fclose(fp);
+	printf("欢迎光临此提款机\n");
+	for(j=1;j<=3;j++)						
+	{
+		printf("请输入提款卡ID:");				/*输入账号ID*/
+		scanf("%d",&id);
+		a=check_id(id);				/*子程序:确认数据库是否有此ID*/
+		if(a==1)
+		break;
+		else 
+		printf("ID输入错误\n");
+	}
+    for(i=1;i<=3;i++)
+	{
+		printf("请输入密码:");					/*输入密码PW*/
+		scanf("%d",&PW);			
+		a=check_PW(PW);							/*子程序:确认密码*/
+		if(a==1)
+		break;
+		else
+		printf("密码输入错误\n");
+		if(i==3)
+		{	
+			printf("你的卡已经被怪兽吃掉啦!!\n");   /*密码输入错误三次*/
+			printf("请带100万元向OSAKADO赎回");    /*程序中断结束*/
+			goto end;
+		}
+	}
+	withdraw();			/*选择服务项目*/
+	writefile(guide);	/*数据更改后写入档案*/
+	end:				/*终止用*/
+			printf("\n");
+	}
+
+四、子程序解析
+1.int readfile(struct member guide[])
+功能：读档进来
+参数：struct member guide[]
+回传值：回传值i告知档案里有i组数据
+流程图：
+
+  
+程序代码：
+int readfile(struct member guide[])             /*子程序*/
+{
+	if((fp=fopen("member2.txt","r"))==NULL)   /*看是否能开启档案*/
+	{
+		printf("can not open the file");        /不行的话就显示”can not
+	}                                     open the file” */
+
+	int i=0;               
+	int fileend=0;              /*fileend  宣告侦测是否已到档案结尾*/
+	while(fileend==feof(fp))         /*feof函数检查是否已到档案结尾，*/
+/*若不是则传回0，若是则传回非0的值*/
+	{
+		i=i+1;
+		fscanf(fp,"%d",&guide[i].num);         /*读取档案数据的num*/
+        fscanf(fp,"%s",&guide[i].ID);           /*读取档案数据的ID*/
+		fscanf(fp,"%ld",&guide[i].password); /*读取档案数据的password*/
+		fscanf(fp,"%ld",&guide[i].money);     /*读取档案数据的money*/
+
+	}
+	return i;
+
+}
+
+2. check_id(int id)
+说明：当我们输入账号时，寻找数据库中是否有此账号
+输入参数：id账号
+传回值：数据库有此账号id，传回1；否则传回0
+流程图：
+
+程序代码：
+
+check_id(int id)		 /*子程序:确认数据库内账号是否存在*/
+{
+		int n;
+		for(n=1;n<=q-1;n++)
+		{
+			if(id==guide[n].ID) 
+				return 1; /*账号ID存在传回值1*/
+		}
+		return 0; /*账号ID不存在传回值0*/
+}
+3. check_PW(long int PW)
+说明：当我们输入密码（PW）时，比对此账号密码是否正确
+输入参数：PW（账号密码）
+传回值：PW正确，传回1；不正确传回0
+流程图：
+
+
+程序代码：
+
+check_PW(long int PW) /*子程序;确认ID密码*/
+{
+		if(PW==guide[n].password)
+			return 1; /*密码正确传回值1*/
+return 0; /*密码不正确传回值0*/
+}
+
+4. withdraw()
+说明：当我们确认账号和密码皆为正确后，即可执行提款的动作
+输入参数：无，因为我们定义structure的矩阵和数据为全域变量
+传回值：无，在子程序内就把数据提款和显示的最后步骤做完，无传回值
+流程图：
+
+
+程序代码：
+void withdraw()
+{
+	long int x;		/*x表示提款的金额数目*/
+	int T;		/*T表示提款类别*/
+
+	printf("\n1.存簿提款\n");
+	printf("2.跨行提款\n");
+	printf("3.查询结余\n");
+
+	printf("请输入欲使用的服务类别(1~3):");
+	scanf("%d",&T);
+
+	if(T>=1&&T<=3)
+	{
+		switch(T)
+		{
+		case 1:
+			printf("请输入欲提款金额:");
+			scanf("%ld",&x);
+			if(x<=guide[n].money)
+			{
+				guide[n].money=guide[n].money-x;
+			}
+			else
+				printf("输入金额错误,余额不足\n");
+			break;
+		case 2:
+			printf("请输入欲提款金额:");
+			scanf("%ld",&x);
+			if(x<=guide[n].money-6)
+			{
+				guide[n].money=guide[n].money-x-6;	/*跨行手续费6元*/
+			}
+			else
+				printf("输入金额错误,余额不足\n");
+			break;
+		case 3:
+			x=0;
+			break;
+		}
+	}
+
+	printf("本次提款金额:%d元整\n",x);
+	printf("您的余额还有%ld元整\n",guide[n].money);
+	printf("谢谢您的使用，欢迎再度利用本局提款。");
+}
+
+
+5. writefile()
+说明：将结果存到member2.txt的档案中 
+输入参数：struct member guide[]
+传回值：无
+流程图：
+
+
+程序代码：
+int writefile(struct member guide[])             /*子程序*/
+{
+	int i;                             
+	 fp=fopen("member2.txt","w");            /*开启档案*/
+	 for(i=1;i<=q-1;i++)
+	 {
+			fprintf(fp,"%d\t”,guide[i].num);   /*将矩阵的num写到档案*/
+            fprintf(fp,“%d\t”,guide[i].ID);   /*将矩阵的ID写到档案*/
+            fprintf(fp,“%ld\t”,guide[i].password);  /*将矩阵的password写到档案*/
+            fprintf(fp,“%ld\n”,guide[i].money);   /*将矩阵的money写到档案*/
+		}
+	 fclose(fp);           /*关档*/
+}
+
+五、程序执行范例
+一开始程序显示主选单，并输入ID与密码
+***************************
+欢迎光临此提款机
+***************************
+请输入提款卡ID:22
+请输入密码:9032
+
+
+之后选择服务项目
+***************************
+欢迎光临此提款机
+***************************
+请输入提款卡ID:22
+请输入密码:9032
+1.存簿提款
+2.跨行提款
+3.查询结余
+请输入欲使用的服务类别(1~3):
+
+
+
+1.选择存簿提款并输入提款金额
+***************************
+欢迎光临此提款机
+***************************
+请输入提款卡ID:22
+请输入密码:9032
+1.存簿提款
+2.跨行提款
+3.查询结余
+请输入欲使用的服务类别(1~3):1
+请输入欲提款金额:4000
+执行完结果为
+***************************
+欢迎光临此提款机
+***************************
+请输入提款卡ID:22
+请输入密码:9032
+1.存簿提款
+2.跨行提款
+3.查询结余
+请输入欲使用的服务类别(1~3):1
+请输入欲提款金额:4000
+本次提款金额:4000元整
+您的余额还有15455494元整
+谢谢您的使用，欢迎再度利用本局提款
+
+2.选择跨行提款并输入提款金额
+***************************
+欢迎光临此提款机
+***************************
+请输入提款卡ID:22
+请输入密码:9032
+1.存簿提款
+2.跨行提款
+3.查询结余
+请输入欲使用的服务类别(1~3):2
+请输入欲提款金额:8000
+
+
+
+执行完结果为
+***************************
+欢迎光临此提款机
+***************************
+请输入提款卡ID:22
+请输入密码:9032
+1.存簿提款
+2.跨行提款
+3.查询结余
+请输入欲使用的服务类别(1~3):2
+请输入欲提款金额:8000
+本次提款金额:8000元整
+您的余额还有25459994元整
+谢谢您的使用，欢迎再度利用本局提款
+
+3.选择查询结余
+***************************
+欢迎光临此提款机
+***************************
+请输入提款卡ID:44
+请输入密码:9034
+1.存簿提款
+2.跨行提款
+3.查询结余
+请输入欲使用的服务类别(1~3):3
+本次提款金额:0元整
+您的余额还有55468000元整
+谢谢您的使用，欢迎再度利用本局提款
+
+4.如果输入密码错误3次
+***************************
+欢迎光临此提款机
+***************************
+请输入提款卡ID:55
+请输入密码:94
+密码输入错误
+请输入密码:34
+密码输入错误
+请输入密码:54
+密码输入错误
+你的卡已经被怪兽吃掉啦!
+请带100万元向OSAKADO赎回
+
+六、完整程序代码和批注
+#include<stdio.h>
+#include<string.h>
+
+FILE *fp;				/*宣告档案*/
+
+struct member			/*宣告结构*/
+{
+    int  num;
+	int ID;
+	long int password;
+	long int money;
+};
+
+int q,n;				/*q:数据库内数据数,n:执行程序中第几笔数据*/
+int readfile(struct member guide[]);		/*读档*/
+int writefile(struct member guide[]);		/*写档*/
+struct member guide[100];
+check_id(int ID);				/*寻找数据库是否有此账号ID子程序*/
+check_PW(long int PW);			/*确认ID密码是否正确子程序*/
+void withdraw();
+
+void main()
+{
+	long int PW=0;
+	int a,i;					/*a:确认数据库账号和密码传回之值*/
+	int id;
+	int l;
+
+	fp=fopen("member2.txt","r");
+	if((fp=fopen("member2.txt","r"))==NULL)		/*看是否能开启档案*/
+	{
+		printf("can not open the file");	/*不行的话就显示"can not open the file" */
+	} 
+	q=readfile(guide);							/*呼叫读文件子程序*/
+	
+	fclose(fp);						/*关档*/
+
+	printf("**********************************\n");
+	printf("      欢迎光临此提款机\n");
+	printf("**********************************\n");
+	for(n=1;n<=3;n++)
+	{
+		printf("请输入提款卡ID:");
+		scanf("%d",&id);
+		a=check_id(id);				/*确认数据库是否有此ID子程序*/
+		if(a==1)
+		break;
+		else 
+		printf("ID输入错误\n");
+	}
+
+    for(i=1;i<=3;i++)
+	{
+		printf("请输入密码:");
+		scanf("%d",&PW);
+		a=check_PW(PW);				/*确认账号密码子程序*/
+		if(a==1)
+		break;
+		else
+		printf("密码输入错误\n");
+		if(i==3)
+		{	
+			printf("你的卡已经被怪兽吃掉啦!!\n");/*输入密码错误三次*/
+			printf("请带100万元向OSAKADO赎回");
+			goto end;				/*中断程序*/
+		}
+	}
+	
+	withdraw();						/*选择服务项目*/
+
+	writefile(guide);				/*呼叫写文件子程序*/
+	
+	end:
+			printf("\n");
+	scanf("%d",&p);
+}
+
+int readfile(struct member guide[])
+{
+	int i=0;
+    
+	int fileend=0;						/*fileend  宣告侦测是否已到档案结尾*/
+	if((fp=fopen("member2.txt","r"))==NULL)		/*看是否能开启档案*/
+	{
+		printf("can not open the file");	/*不行的话就显示"can not open the file" */
+	} 
+	while(fileend==feof(fp))			 /*feof函数检查是否已到档案结尾，*/
+									/*若不是则传回0，若是则传回非0的值*/
+	{
+		i=i+1;
+		fscanf(fp,"%d",&guide[i].num); /*读取档案数据的num*/
+        fscanf(fp,"%d",&guide[i].ID);/*读取档案数据的ID*/
+		fscanf(fp,"%ld",&guide[i].password);/*读取档案数据的password*/
+		fscanf(fp,"%ld",&guide[i].money);/*读取档案数据的money*/
+
+	}
+	return i;
+}
+check_id(int id)	/*子程序:确认数据库内账号是否存在*/
+{
+	for(n=1;n<=q-1;n++)
+	{
+		if(id==guide[n].ID)  /*账号ID存在传回值1*/
+			return 1;
+	}
+	return 0;				 /*账号ID不存在传回值0*/
+}
+
+check_PW(long int PW)/*子程序;确认ID密码*/
+{
+
+	 
+		if(PW==guide[n].password)
+			return 1;			/*密码正确传回值1*/
+	
+	return 0;					/*密码不正确传回值0*/
+}
+
+void withdraw()					/*服务项目子程序*/
+{
+	long int x;	/*x表示提款的金额数目*/
+	int T;		/*T表示提款类别*/
+
+	printf("\n1.存簿提款\n");
+	printf("2.跨行提款\n");
+	printf("3.查询结余\n");
+
+	printf("请输入欲使用的服务类别(1~3):");
+	scanf("%d",&T);
+
+	if(T>=1&&T<=3)				/*选择项目*/
+	{
+		switch(T)
+		{
+		case 1:
+			printf("请输入欲提款金额:");
+			scanf("%ld",&x);
+			if(x<=guide[n].money)
+			{
+				guide[n].money=guide[n].money-x;
+			}
+			else
+				printf("输入金额错误,余额不足\n");
+			break;
+
+		case 2:
+			printf("请输入欲提款金额:");
+			scanf("%ld",&x);
+			if(x<=guide[n].money-6)
+			{
+				guide[n].money=guide[n].money-x-6;	/*跨行手续费6元*/
+			}
+			else
+				printf("输入金额错误,余额不足\n");
+			break;
+		case 3:
+			x=0;
+			break;
+		}
+	}
+
+	printf("本次提款金额:%d元整\n",x);
+	printf("您的余额还有%ld元整\n",guide[n].money);
+	printf("谢谢您的使用，欢迎再度利用本局提款。");
+}
+int writefile(struct member guide[])				/*写文件子程序*/
+{
+	int i;
+	 fp=fopen("member2.txt","w");                   /*开启member2.txt檔*/
+	 for(i=1;i<=q-1;i++)
+	 {
+			
+		fprintf(fp,”%d\t”,guide[i].num);    			/*将矩阵的num写到档案*/
+        fprintf(fp,”%d\t”,guide[i].ID); 				/*将矩阵的ID写到档案*/
+		fprintf(fp,”%ld\t”,guide[i].password);		/*将矩阵的password写到档案*/
+        fprintf(fp,”%ld\t”,guide[i].money);		/*将矩阵的money写到档案*/
+	 fclose(fp);									/*关闭档案*/
+}
+
+
