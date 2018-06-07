@@ -1,0 +1,1534 @@
+2018年05月31日C程序设计实训大纲
+一、本周实训的内容
+1、   题目：简易求职人才管理系统
+2、   要求（1）分析项目的结构；
+          （2）理解项目的实现功能；
+          （3）对项目添加创新点（自己的东西）
+3、   周期：14天（第十三周、第十四周）
+4、   考核方式：答辩
+5、   作业提交的内容如下：
+（1）实现的代码；
+          （2）系统文档；
+          （3）对文档的深度解析；
+
+附件：
+  简易求职人才管理系统项目开发计划
+1 项目设计的目的
+这套系统提供了以下的功能:
+[1]登录人才数据:提供公司进行提供公司数据以人才的动作
+[2]登录求职数据:提供无业游民进行登录本身数据以求职的动作
+[3]修改人才数据;修改公司已登录的资料
+[4]修改求职数据; 修改无业游民已登录的数据
+[5]搜寻工作:搜寻有哪些公司有职缺
+[6]搜寻人才:搜寻卧龙凤雏
+[7]其它:一些额外有关本程序的说明
+[8]离开:离开程序
+2 项目开发时间：
+2015-04-14至2015-04-28
+3 项目开发环境
+  Windows2000操作系统、 VC++6.0集成开发环境等
+4 项目工作的细化
+  框架设计或整体设计
+  代码的编写
+  代码的调试
+  代码运行的案例分析
+  技术文档的编写
+6 项目答辩
+  （1）系统演示
+  （2）文稿的准备
+  （3）出现问题的解答
+注：此项目文档的编写格式仿照前面系统项目格式（必须含部分模块文字说明及流程图）
+
+简易求职人才系统
+
+一、系统功能、输入与输出的数据
+这是一个类似于104人力银行的求职人才系统，提供个人求职以及公司人才的管道，这套系统提供了以下的功能:
+[1]登录人才数据:提供公司进行提供公司数据以人才的动作
+[2]登录求职数据:提供无业游民进行登录本身数据以求职的动作
+[3]修改人才数据;修改公司已登录的资料
+[4]修改求职数据; 修改无业游民已登录的数据
+[5]搜寻工作:搜寻有哪些公司有职缺
+[6]搜寻人才:搜寻卧龙凤雏
+[7]其它:一些额外有关本程序的说明
+[8]离开:离开程序
+二、应用层面说明
+这样的系统不仅可以用于求职人才数据上，也可以用于公司人事、会员组织上；如果可以更加强系统的功能，则可以成为一套更完整的人事系统。
+
+三、数据结构说明
+本系统有两个重要的数据结构：公司的数据结构（data1）以及人才的数据结构（data2），用来纪录一笔公司及人才的资料；每一笔公司的数据都包含以下的字段：
+●编号（int num），编号若为-1表示该笔数据并无纪录一笔数据
+●公司名称（char company[50]），最多50个英文字母（25个中文字）
+●位置代码（int address1num），以代码表示公司位置
+●公司位置（char address1[50]），最多50个英文字母（25个中文字）
+●公司地址(char address2[50])，最多50个英文字母（25个中文字）
+●性质代码(int propertynum)，以代码表示公司性质
+●公司性质(char property[50])，最多50个英文字母（25个中文字）
+●需要学历(char background[50])，最多50个英文字母（25个中文字）
+●性别限制(char sex[50])，最多50个英文字母（25个中文字）
+●年龄限制(char old[50])，最多50个英文字母（25个中文字）
+●其它说明(char ps[50])，最多50个英文字母（25个中文字）
+●联络人(char person[50]) ，最多50个英文字母（25个中文字）
+●联络人电话(char tel[10]) ，最多10个英文字母
+
+图示概念如下：
+                       公司(data1)
+字段意义	字段名称
+编号	int num
+公司名称	char company[50]
+位置代码	int address1num
+公司位置	char address1[50]
+公司地址	char address2[50]
+性质代码	int propertynum
+公司性质	char property[50]
+需要学历	char background[50]
+性别限制	char sex[50]
+年龄限制	char old[50]
+其它说明	char ps[50]
+联络人	char person[50]
+联络人电话	char tel[10]
+
+每一笔人才的数据都包含以下的字段：
+●编号（int num），编号若为-1表示该笔数据并无纪录一笔数据
+●姓名（char name[50]），最多50个英文字母（25个中文字）
+●位置代码（int address1num），以代码表示居住位置
+●居住位置（char address1[50]），最多50个英文字母（25个中文字）
+●居住地址(char address2[50])，最多50个英文字母（25个中文字）
+●专长代码(int propertynum)，以代码表示个人专长
+●专长(char property[50])，最多50个英文字母（25个中文字）
+●学历代码(int backgroundnum)，以代码表示个人学历
+●学历(char background[50]) ，最多50个英文字母（25个中文字）
+●性别代号(int sexnum)，以代码表示个人性别
+●性别 (char sex[50]) ，最多50个英文字母（25个中文字）
+●年龄(int old)，最多50个英文字母（25个中文字）
+●其它说明(char ps[50])，最多50个英文字母（25个中文字）
+●联络电话(char tel[10]) ，最多10个英文字母
+
+                       人才(data2)
+字段意义	字段名称
+编号	int num
+姓名	char name[50]
+位置代码	int address1num
+居住位置	char address1[50]
+居住住址	char address2[50]
+专长代码	int propertynum
+专长	char property[50]
+学历代码	int backgroundnum
+学历	char background[50]
+性别代号	int sexnum
+性别	char sex[50]
+年龄	int old
+其它说明	char ps[50]
+联络电话	char tel[10]
+ 
+若要纪录多笔数据，则使用一个结构数组即可；例如，若要纪录200笔人才的数据，则使用一个大小为200的结构数组；这个数组有200个元素，每个元素皆包含十四个字段：编号（int num），姓名（char name[50]），位置代码（int address1num），居住位置（char address1[50]），居住地址(char address2[50])，专长代码(int propertynum)，专长(char property[50])，学历代码(int backgroundnum)，学历(char background[50])，性别代号(int sexnum)，性别 (char sex[50])，年龄(char old[50])，其它说明(char ps[50])，联络电话(char tel[10])；图示概念如下：
+数组索引	编
+号	姓
+名	位
+置
+代
+码	居住位置	居住住址	专长代码	专长	学历代码	学历	性别代号	性别	年龄	其它说明	联络电话
+1	第   1   位  求  职  者  的   编  号	第1位求职者的姓名	第1位求职者的位置 代
+码	第1位求职者的居住位置	第1位求职者的居住住址	第1位求职者的专长代码	第1位求职者的专长	第1位求职者的学历代码	第1位求职者的学历	第1位求职者的性别代号	第1位求职者的性别	第1位求职者的年龄	第1位求职者的其它说明	第1位求职者的联络电话
+2	第2位求职者的编号	第2位求职者的姓名	第2位求职者的位置 代
+码	第2位求职者的居住位置	第2位求职者的居住住址
+	第2位求职者的专长代码	第2位求职者的专长	第2位求职者的学历代码	第2位求职者的学历	第2位求职者的性别代号	第2位求职者的性别	第2位求职者的年龄	第2位求职者的其它说明	第2位求职者的联络电话
+3	第3位求职者的编号	第3位求职者的姓名	第3位求职者的位置 代
+码	第3位求职者的居住位置	第3位求职者的居住住址
+	第3位求职者的专长代码	第3位求职者的专长	第3位求职者的学历代码	第3位求职者的学历	第3位求职者的性别代号	第3位求职者的性别	第3位求职者的年龄	第3位求职者的其它说明	第3位求职者的联络电话
+…	…	…	…	…	…	…	…	…	…	…	…	…	…	…
+200	第2
+0
+0位求职者的编号	第2
+0
+0位求职者的姓名	第2
+0
+0位求职者的位置 代
+码	第2
+0
+0位求职者的居住位置	第2
+0
+0
+位求职者的居住住址	第2
+0
+0位求职者的专长代码	第2
+0
+0位求职者的专长	第2
+0
+0位求职者的学历代码	第2
+0
+0位求职者的学历	第2
+0
+0位求职者的性别代号	第2
+0
+0位求职者的性别	第2
+0
+0位求职者的年龄	第2
+0
+0位求职者的其它说明	第2
+0
+0位求职者的联络电话
+
+四、程序说明
+1.主程序main()
+●说明：先初始化程序，次加载数据文件，最后根据使用者的选择而执行相对应的动作。
+
+●程序代码：
+int main()
+{
+ int a;
+ init1();
+ init2();
+ data1_file=fopen("data1.txt","r");
+ read_data1();
+ fclose(data1_file);
+ data2_file=fopen("data2.txt","r");
+ read_data2();
+ fclose(data2_file);
+ printf("**************\n");
+ printf("*求职人才系统*\n");
+ printf("**************\n");
+ printf("[1]登录人才数据\n[2]登录求职数据\n[3]修改人才数据\n[4]修改求职数据\n[5]搜寻工作\n[6]搜寻人才\n[7]其它\n[8]离开\n输入选项>");
+ scanf("%d",&a);
+ if(a==1)
+ {
+  addpeople();
+ }
+ else if(a==2)
+ {
+  addwork();
+ }
+ else if(a==3)
+ {
+  lookpeople();
+ }
+ else if(a==4)
+ {
+  lookwork();  
+ }
+ else if(a==5)
+ {
+  search_data1();
+ }
+ else if(a==6)
+ {
+  search_data2();
+ }
+ else if(a==7)
+ {
+  other();
+ }
+ else if(a==8)
+ {
+  exit (0);
+ }
+ else
+ {
+  printf("输入错误,请重新输入\n");
+  main();
+ }
+}
+
+2.子程序
+2.1 init1(),init2()
+●说明：初使化程序。
+●流程图：
+
+●程序代码：
+void init1()            /*初始化子程序*/
+
+{
+ int i;
+ for(i=1;i<max_data1;i++)
+ {
+  data1[i].num=-1;
+ }
+}
+
+void init2()            /*初始化子程序*/
+{
+ int i;
+ for(i=1;i<max_data2;i++)
+ {
+  data2[i].num=-1;
+ }
+}
+
+2.2 addpeople()
+●说明：登录人才数据。
+●流程图：
+
+●程序代码：
+void addpeople()       /*新增人才数据子程序*/
+{
+ int i,j;
+ for(i=1;i<=max_data1;i++)
+ {
+  if(data1[i].num==-1)
+  {
+   data1[i].num=i;
+   printf("请输入账号名称(限用数字)>");
+   scanf("%d",&(data1[i].specialnum));
+   for(j=1;j<i;j++)
+   {
+    if(data1[i].specialnum==data1[j].specialnum)
+	{
+     data1[i].num=-1;
+	 printf("该账号已有人使用,请重新输入\n");
+	 addpeople();
+	}
+   }
+   printf("请输入密码(限用数字)>");
+   scanf("%d",&(data1[i].pass));
+   printf("请输入公司名称>");
+   scanf("%s",data1[i].company);
+   printf("请输入公司所在区域代码[1]北部[2]中部[3]南部[4]西部[5]东部>");
+   scanf("%d",&(data1[i].address1num));
+   while(1)
+   {
+    if(data1[i].address1num>5 || data1[i].address1num<1)
+    {
+     printf("输入不正确，请重新输入：\n");
+     scanf("%d",&(data1[i].address1num));
+    }
+    else break;
+   }
+   switch(data1[i].address1num)
+   {
+    case 1:
+           strcpy(data1[i].address1,"北部");
+           break;
+    case 2:
+           strcpy(data1[i].address1,"中部");
+           break;
+    case 3:
+           strcpy(data1[i].address1,"南部");
+           break;
+    case 4:
+           strcpy(data1[i].address1,"西部");
+           break;
+    case 5:
+           strcpy(data1[i].address1,"东部");
+           break;
+    default:
+            break;
+   }
+   printf("请输入公司住址>");
+   scanf("%s",data1[i].address2);
+   printf("请输入公司性质代码[1]劳动业[2]服务业[3]信息业[4]医疗业[5]其它>");
+   scanf("%d",&(data1[i].propertynum));
+   while(1)
+   {
+    if(data1[i].propertynum>5 || data1[i].propertynum<1)
+    {
+     printf("输入不正确，请重新输入：\n");
+     scanf("%d",&(data1[i].propertynum));
+    }
+    else break;
+   }
+   switch(data1[i].propertynum)
+   {
+    case 1:
+           strcpy(data1[i].property,"劳动业");
+           break;
+    case 2:
+           strcpy(data1[i].property,"服务业");
+           break;
+    case 3:
+           strcpy(data1[i].property,"信息业");
+           break;
+    case 4:
+           strcpy(data1[i].property,"医疗业");
+           break;
+    case 5:
+           strcpy(data1[i].property,"其它");
+           break;
+    default:
+            break;
+   }
+   printf("请输入需要的学历>");
+   scanf("%s",data1[i].background);
+   printf("请输入性别限制>");
+   scanf("%s",data1[i].sex);
+   printf("请输入年龄限制>");
+   scanf("%s",data1[i].old);
+   printf("请输入其它额外说明的数据>");
+   scanf("%s",data1[i].ps);
+   printf("请输入联络人姓名>");
+   scanf("%s",data1[i].person);
+   printf("请输入联络人电话>");
+   scanf("%s",data1[i].tel);
+   i=max_data1+1;
+  }
+ }
+ data1_file=fopen("data1.txt","w");
+ savepeople();
+ fclose(data1_file);
+ main();
+}
+
+2.3 addwork()
+●说明：新增求职数据。
+●流程图：
+
+
+●程序代码：
+void addwork()                       /*新增求职数据子程序*/
+{
+ int i,j;
+ for(i=1;i<=max_data2;i++)
+ {
+  if(data2[i].num==-1)
+  {
+   data2[i].num=i;
+   printf("请输入账号名称(限用数字)>");
+   scanf("%d",&(data2[i].specialnum));
+   for(j=1;j<i;j++)
+   {
+    if(data2[i].specialnum==data2[j].specialnum)
+	{
+     data2[i].num=-1;
+	 printf("该账号已有人使用,请重新输入\n");
+	 addwork();
+	}
+   }
+   printf("请输入密码(限用数字)>");
+   scanf("%d",&(data2[i].pass));
+   printf("请输入姓名>");
+   scanf("%s",data2[i].name);
+   printf("请输入居住区域代码[1]北部[2]中部[3]南部[4]西部[5]东部>");
+   scanf("%d",&(data2[i].address1num));
+   作业点2（新增求职数据函数的流程图填写部分代码完成数据错误重新输入）
+/*
+while(data2[i].address1num>5&&data2[i].address1num<1&&data2[i].address1num%1!=data2[i].address1num)
+{
+printf("输入有误，请重新输入");
+printf("请输入居住区域代码[1]北部[2]中部[3]南部[4]西部[5]东部>");
+scanf("%d",&(data2[i].address1num));
+}
+*/
+   switch(data2[i].address1num)
+   {
+    case 1:
+           strcpy(data2[i].address1,"北部");
+           break;
+    case 2:
+           strcpy(data2[i].address1,"中部");
+           break;
+    case 3:
+           strcpy(data2[i].address1,"南部");
+           break;
+    case 4:
+           strcpy(data2[i].address1,"西部");
+           break;
+    case 5:
+           strcpy(data2[i].address1,"东部");
+           break;
+    default:
+            break;
+   }
+   printf("请输入住址>");
+   scanf("%s",data2[i].address2);
+   printf("请输入个人专长代码[1]金融事业[2]电机信息[3]教育学术[4]医疗专业[5]其它>");
+   scanf("%d",&(data2[i].propertynum));
+   while(1)
+   {
+    if(data2[i].propertynum>5 || data2[i].propertynum<1)
+    {
+     printf("输入不正确，请重新输入：\n");
+     scanf("%d",&(data2[i].propertynum));
+    }
+    else break;
+   }
+   switch(data2[i].propertynum)
+   {
+    case 1:
+           strcpy(data2[i].property,"金融事业");
+           break;
+    case 2:
+           strcpy(data2[i].property,"电机信息");
+           break;
+    case 3:
+           strcpy(data2[i].property,"教育学术");
+           break;
+    case 4:
+           strcpy(data2[i].property,"医疗专业");
+           break;
+    case 5:
+           strcpy(data2[i].property,"其它");
+           break;
+    default:
+            break;
+   }
+   printf("请输入需要的学历代码[1]小学[2]国中[3]高中[4]大专[5]研究所[6]博士>");
+   scanf("%d",&(data2[i].backgroundnum));
+   while(1)
+   {
+    if(data2[i].backgroundnum>6 || data2[i].backgroundnum<1)
+    {
+     printf("输入不正确，请重新输入：\n");
+     scanf("%d",&(data2[i].backgroundnum));
+    }
+    else break;
+   }
+   switch(data2[i].backgroundnum)
+   {
+    case 1:
+           strcpy(data2[i].background,"小学");
+           break;
+    case 2:
+           strcpy(data2[i].background,"国中");
+           break;
+    case 3:
+           strcpy(data2[i].background,"高中");
+           break;
+    case 4:
+           strcpy(data2[i].background,"大专");
+           break;
+    case 5:
+           strcpy(data2[i].background,"研究所");
+           break;
+    case 6:
+           strcpy(data2[i].background,"博士");
+           break;
+    default:
+            break;
+   }
+   printf("请输入性别代号[1]男[2]女[3]其它>");
+   scanf("%d",&(data2[i].sexnum));
+   while(1)
+   {
+    if(data2[i].sexnum>3 || data2[i].sexnum<1)
+    {
+     printf("输入不正确，请重新输入：\n");
+     scanf("%d",&(data2[i].sexnum));
+    }
+    else break;
+   }
+   switch(data2[i].sexnum)
+   {
+    case 1:
+           strcpy(data2[i].sex,"男");
+           break;
+    case 2:
+           strcpy(data2[i].sex,"女");
+           break;
+    case 3:
+           strcpy(data2[i].sex,"其它");
+           break;
+    default:
+            break;
+   }
+   printf("请输入年龄>");
+   scanf("%d",&(data2[i].old));
+   printf("请输入其它额外说明的数据>");
+   scanf("%s",data2[i].ps);
+   printf("请输入联络电话>");
+   scanf("%s",data2[i].tel);
+   i=max_data2+1;
+  }
+ }
+ data2_file=fopen("data2.txt","w");
+ savework();
+ fclose(data2_file);
+ main();
+}
+
+2.4 changepeople(int z1)
+●说明：修改人才数据。
+●流程图：
+
+
+
+
+
+●程序代码：
+void changepeople(int z1)        /*更改数据子程序*/
+{
+ int a,b;
+ b=z1;
+ printf("==账号名称：%d=======================================================\n",data1[z1].specialnum);
+ printf("|[1]密码:%d\n",data1[z1].pass);
+ printf("|[2]公司名称：%s\n",data1[z1].company);
+ printf("|[3]区域：%s\t        [4]公司位置：%s\n",data1[z1].address1,data1[z1].address2);
+ printf("|[5]工作性质：%s\t[6]需要学历：%s\t[7]性别限制：%s\n",data1[z1].property,data1[z1].background,data1[z1].sex);
+ printf("|[8]年龄限制：%s\n",data1[z1].old);
+ printf("|[9]其它说明：%s\n",data1[z1].ps);
+ printf("|[10]联络人姓名：%s\t[11]联络电话：%s\n",data1[z1].person,data1[z1].tel);
+ printf("==================================================================\n");
+ printf("请问你要修改何项数据[1]~[11],回主画面[12]>");
+ scanf("%d",&a);
+ switch(a)
+ {
+  case 1:
+         printf("请输入密码(限用数字)>");
+         scanf("%d",&(data1[z1].pass));
+         break;
+  case 2:
+         printf("请输入公司名称>");
+         scanf("%s",data1[z1].company);
+         break;
+  case 3:
+         printf("请输入公司所在区域代码[1]北部[2]中部[3]南部[4]西部[5]东部>");
+         scanf("%d",&(data1[z1].address1num));
+         while(1)
+		 {
+          if(data1[z1].address1num>5 || data1[z1].address1num<1)
+		  {
+           printf("输入不正确，请重新输入：\n");
+           scanf("%d",&(data1[z1].address1num));
+		  }
+          else break;
+		 }
+         switch(data1[z1].address1num)
+		 {
+          case 1:
+                 strcpy(data1[z1].address1,"北部");
+                 break;
+          case 2:
+                 strcpy(data1[z1].address1,"中部");
+                 break;
+          case 3:
+                 strcpy(data1[z1].address1,"南部");
+                 break;
+          case 4:
+                 strcpy(data1[z1].address1,"西部");
+                 break;
+          case 5:
+                 strcpy(data1[z1].address1,"东部");
+                 break;
+          default:
+                  break;
+		 }
+         break;
+  case 4:
+         printf("请输入公司住址>");
+         scanf("%s",data1[z1].address2);
+         break;
+  case 5:
+         printf("请输入公司性质代码[1]劳动业[2]服务业[3]信息业[4]医疗业[5]其它>");
+         scanf("%d",&(data1[z1].propertynum));
+         while(1)
+		 {
+          if(data1[z1].propertynum>5 || data1[z1].propertynum<1)
+		  {
+           printf("输入不正确，请重新输入：\n");
+           scanf("%d",&(data1[z1].propertynum));
+		  }
+          else break;
+		 }
+         switch(data1[z1].propertynum)
+		 {
+          case 1:
+                 strcpy(data1[z1].property,"劳动业");
+                 break;
+          case 2:
+                 strcpy(data1[z1].property,"服务业");
+                 break;
+          case 3:
+                 strcpy(data1[z1].property,"信息业");
+                 break;
+          case 4:
+                 strcpy(data1[z1].property,"医疗业");
+                 break;
+          case 5:
+                 strcpy(data1[z1].property,"其它");
+                 break;
+          default:
+                  break;
+		 }
+         break;
+  case 6:
+         printf("请输入需要的学历>");
+         scanf("%s",data1[z1].background);
+		 break;
+  case 7:
+         printf("请输入性别限制>");
+         scanf("%s",data1[z1].sex);
+         break;
+  case 8:
+		 printf("请输入年龄限制>");
+         scanf("%s",data1[z1].old);
+         break;
+  case 9:
+		 printf("请输入其它额外说明的数据>");
+         scanf("%s",data1[z1].ps);
+         break;
+  case 10:		 
+		  printf("请输入联络人姓名>");
+          scanf("%s",data1[z1].person);
+          break;
+  case 11:		  
+		  printf("请输入联络人电话>");
+          scanf("%s",data1[z1].tel);
+          break;
+  case 12:
+	      main();
+		  break;
+  default:
+	      printf("输入错误,请重新输入\n");
+          break;
+ }
+ data1_file=fopen("data1.txt","w");
+ savepeople();
+ fclose(data1_file);
+ changepeople(b);
+}
+
+2.5 changework(int z2)
+●说明：修改求职数据。
+●流程图：
+
+●程序代码：
+void changework(int z2)               /*更改数据子程序*/
+{
+ int a,b;
+ b=z2;
+ printf("==账号名称：%d=======================================================\n",data2[z2].specialnum);
+ printf("|[1]密码:%d\n",data2[z2].pass);
+ printf("|[2]姓名：%s\n",data2[z2].name);
+ printf("|[3]区域：%s\t        [4]居住位置：%s\n",data2[z2].address1,data2[z2].address2);
+ printf("|[5]专长：%s\t[6]学历：%s\t[7]性别：%s\n",data2[z2].property,data2[z2].background,data2[z2].sex);
+ printf("|[8]年龄：%d\n",data2[z2].old);
+ printf("|[9]其它说明：%s\n",data2[z2].ps);
+ printf("|[10]联络电话：%s\n",data2[z2].tel);
+ printf("==================================================================\n");
+ printf("请问你要修改何项数据[1]~[10],回主画面[11]>");
+ scanf("%d",&a);
+ switch(a)
+ {
+  case 1:
+	     printf("请输入密码(限用数字)>");
+         scanf("%d",&(data2[z2].pass));
+		 break;
+  case 2:
+         printf("请输入姓名>");
+         scanf("%s",data2[z2].name);
+		 break;
+  case 3:
+         printf("请输入居住区域代码[1]北部[2]中部[3]南部[4]西部[5]东部>");
+         scanf("%d",&(data2[z2].address1num));
+         while(1)
+		 {
+          if(data2[z2].address1num>5 || data2[z2].address1num<1)
+		  {
+           printf("输入不正确，请重新输入：\n");
+           scanf("%d",&(data2[z2].address1num));
+		  }
+          else break;
+		 }
+         switch(data2[z2].address1num)
+		 {
+          case 1:
+                 strcpy(data2[z2].address1,"北部");
+                 break;
+          case 2:
+                 strcpy(data2[z2].address1,"中部");
+                 break;
+          case 3:
+                 strcpy(data2[z2].address1,"南部");
+                 break;
+          case 4:
+                 strcpy(data2[z2].address1,"西部");
+                 break;
+          case 5:
+                 strcpy(data2[z2].address1,"东部");
+                 break;
+          default:
+                  break;
+		 }
+		 break;
+  case 4:
+         printf("请输入住址>");
+         scanf("%s",data2[z2].address2);
+		 break;
+  case 5:
+         printf("请输入个人专长代码[1]金融事业[2]电机信息[3]教育学术[4]医疗专业[5]其它>");
+         scanf("%d",&(data2[z2].propertynum));
+         while(1)
+		 {
+          if(data2[z2].propertynum>5 || data2[z2].propertynum<1)
+		  {
+           printf("输入不正确，请重新输入：\n");
+           scanf("%d",&(data2[z2].propertynum));
+		  }
+          else break;
+		 }
+         switch(data2[z2].propertynum)
+		 {
+          case 1:
+                 strcpy(data2[z2].property,"金融事业");
+                 break;
+          case 2:
+                 strcpy(data2[z2].property,"电机信息");
+                 break;
+          case 3:
+                 strcpy(data2[z2].property,"教育学术");
+                 break;
+          case 4:
+                 strcpy(data2[z2].property,"医疗专业");
+                 break;
+          case 5:
+                 strcpy(data2[z2].property,"其它");
+                 break;
+          default:
+                  break;
+		 }
+		 break;
+  case 6:
+		 printf("请输入需要的学历代码[1]小学[2]国中[3]高中[4]大专[5]研究所[6]博士>");
+         scanf("%d",&(data2[z2].backgroundnum));
+         while(1)
+		 {
+          if(data2[z2].backgroundnum>6 || data2[z2].backgroundnum<1)
+		  {
+           printf("输入不正确，请重新输入：\n");
+           scanf("%d",&(data2[z2].backgroundnum));
+		  }
+          else break;
+		 }
+         switch(data2[z2].backgroundnum)
+		 {
+          case 1:
+                 strcpy(data2[z2].background,"小学");
+                 break;
+          case 2:
+                 strcpy(data2[z2].background,"国中");
+                 break;
+          case 3:
+                 strcpy(data2[z2].background,"高中");
+                 break;
+          case 4:
+                 strcpy(data2[z2].background,"大专");
+                 break;
+          case 5:
+                 strcpy(data2[z2].background,"研究所");
+                 break;
+          case 6:
+                 strcpy(data2[z2].background,"博士");
+                 break;
+          default:
+                  break;
+		 }
+		 break;
+  case 7:
+		 printf("请输入性别代号[1]男[2]女[3]其它>");
+         scanf("%d",&(data2[z2].sexnum));
+		
+作业点3根据流程图与上下部分代码填写缺少的部分
+
+
+
+ 
+
+
+
+
+
+
+
+  case 11:
+	      main();
+		  break;
+  default:
+	      printf("输入错误,请重新输入\n");
+	      break;
+ }
+ data2_file=fopen("data2.txt","w");
+ savework();
+ fclose(data2_file);
+ changework(b);
+}
+
+2.6 search_data1 ()
+●说明：搜寻数据。
+●流程图：
+
+●程序代码：
+void search_data1()        /*搜寻的子程序*/
+{
+ int b,b1,b2;
+ printf("请问你要以哪种条件来搜寻\n");
+ printf("[1]公司位置\n[2]公司型态\n[3]返回主画面\n输入选项>");
+ scanf("%d",&b);
+ while(1)
+ {
+  if(b>3 || b<1)
+  {
+   printf("输入不正确，请重新输入：\n");
+   scanf("%d",&b);
+  }
+  else break;
+ }
+ if(b==1)
+ {
+  printf("请问你要找位于何处的公司\n");
+  printf("[1]北部\n[2]中部\n[3]南部\n[4]西部\n[5]东部\n输入选项>");
+  scanf("%d",&b1);
+  while(1)
+  {
+   if(b1>5 || b1<1)
+   {
+    printf("输入不正确，请重新输入：\n");
+    scanf("%d",&b1);
+   }
+   else break;
+  }
+  compareaddress1num1(b1);
+ }
+ if(b==2)
+ {
+  printf("请问你要何种性质的公司\n");
+  printf("[1]劳动业\n[2]服务业\n[3]信息业\n[4]医疗业\n[5]其它\n输入选项>");
+  scanf("%d",&b2);
+  while(1)
+  {
+   if(b2>5 || b2<1)
+   {
+   	printf("输入不正确，请重新输入：\n");
+	scanf("%d",&b2);
+   }
+   else	break;
+  }
+  comparepropertynum1(b2);
+ }
+ if(b==3)
+ {
+  main();
+ }
+}
+
+2.7 search_data2 ()
+●说明：搜寻数据。
+●流程图：
+
+●程序代码：
+void search_data2()                       /*搜寻的子程序*/
+{
+ int c,c1,c2,c3,c4,c5;
+ printf("请问你要以哪种条件来搜寻\n");
+ printf("[1]居住位置\n[2]专长\n[3]学历\n[4]年龄\n[5]性别\n[6]返回主画面\n输入选项>");
+作业点4根据流程图与上下部分代码填写缺少的部分 
+ 
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+  compareaddress1num2(c1);
+ }
+ if(c==2)
+ {
+  printf("请问你要有何种专长的人才\n");
+  printf("[1]金融事业\n[2]电机信息\n[3]教育学术\n[4]医疗专业\n[5]其它\n输入选项>");
+  scanf("%d",&c2);
+  while(1)
+  {
+   if(c2>5 || c2<1)
+   {
+    printf("输入不正确，请重新输入：\n");
+    scanf("%d",&c2);
+   }
+   else	break;
+  }
+  comparepropertynum2(c2);
+ }
+ if(c==3)
+ {
+  printf("请问你要有何种学历的人才\n");
+  printf("[1]小学\n[2]国中\n[3]高中\n[4]大专\n[5]研究所\n[6]博士\n输入选项>");
+  scanf("%d",&c3);
+  while(1)
+  {
+   if(c3>6 || c3<1)
+   {
+    printf("输入不正确，请重新输入：\n");
+    scanf("%d",&c3);
+   }
+   else	break;
+  }
+  comparebackgroundnum(c3);
+ }
+ if(c==4)
+ {
+  printf("请问你要找几岁以上的人才，输入岁数>");
+  scanf("%d",&c4);
+  compareold(c4);
+ }
+ if(c==5)
+ {
+  printf("请问需要何种性别的人才[1]男[2]女[3]其它");
+  scanf("%d",&c5);
+  while(1)
+  {
+   if(c5>3 || c5<1)
+   {
+    printf("输入不正确，请重新输入：\n");
+    scanf("%d",&c5);
+   }
+   else	break;
+  }
+  comparesex(c5);
+ }
+ if(c==6)
+ {
+  main();
+ }
+}
+
+2.8 stop()
+●说明：当一次显示的数据超过2笔(或等于)时,可以选择是否继续看下面的数据,或是跳回主程序
+●流程图：
+
+●程序代码：
+void stop()                  /*间断的子程序*/      
+{
+ int a;
+ z=z+1;
+ if(z==2)
+ {
+  printf("输入[1]继续执行,输入[2]回主画面>");
+  scanf("%d",&a);
+  switch(a)
+  {
+   case 1:
+	      z=0;
+		  break;
+   case 2:
+	      main();
+		  break;
+   default:
+	       printf("输入错误,跳回主画面\n");
+		   main();
+		   break;
+  }
+ }
+}
+
+2.9 other()
+●说明：提供一些程序额外的说明
+●流程图：
+
+●程序代码：
+void other()             /*其它的子程序*/
+{
+ int b;
+ printf("[1]程序说明\n[2]设计者介绍\n[3]返回主画面\n输入选项>");
+ scanf("%d",&b);
+ if(b==1)
+ {
+  printf("|-----------------------------------------------------------------------|\n");
+  printf("|这是一个类似104人力银行的简易求职系统，可方便失业者寻找到适合他们的工作|\n");
+  printf("|-----------------------------------------------------------------------|\n");
+  other();
+ }
+  if(b==2)
+ {
+  printf("|------------------------|\n");
+  printf("| 计算机09三班 89323016 戴明栋 |\n");
+  printf("| 计算机09四班 89323023 李梦婷 |\n");
+  printf("| 计算机09三班 89323027 何奇荣 |\n");
+  printf("|------------------------|\n");
+  other();
+ }
+ if(b==3)
+ {
+  main();
+ }
+ else
+ {
+  printf("输入错误,跳回主画面\n");
+  main();
+ }
+}
+2.10 一些应用的子程序
+●说明：这些程序分别是提供读文件,存盘,比较等等的功能
+void read_data1()             /*读文件子程序*/
+{
+ int i;
+ i=0;
+ while(!feof(data1_file))
+ {
+  i=i+1;
+  fscanf(data1_file,
+         "%d\t%d\t%d\t%s\t%d\t%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+         &(data1[i].num),
+         &(data1[i].specialnum),
+         &(data1[i].pass),
+         data1[i].company,
+         &(data1[i].address1num),
+         data1[i].address1,
+         data1[i].address2,
+         &(data1[i].propertynum),
+         data1[i].property,
+         data1[i].background,
+         data1[i].sex,
+         data1[i].old,
+         data1[i].ps,
+         data1[i].person,
+         data1[i].tel);
+ }
+}
+
+void read_data2()           /*读文件子程序*/
+{
+ int i;
+ i=0;
+ while(!feof(data2_file))
+ {
+  i=i+1;
+  fscanf(data2_file,
+         "%d\t%d\t%d\t%s\t%d\t%s\t%s\t%d\t%s\t%d\t%s\t%d\t%s\t%d\t%s\t%s\n",
+         &(data2[i].num),
+         &(data2[i].specialnum),
+         &(data2[i].pass),
+         data2[i].name,
+         &(data2[i].address1num),
+         data2[i].address1,
+         data2[i].address2,
+         &(data2[i].propertynum),
+         data2[i].property,
+         &(data2[i].backgroundnum),
+         data2[i].background,
+         &(data2[i].sexnum),
+		 data2[i].sex,
+         &(data2[i].old),
+         data2[i].ps,
+         data2[i].tel);
+ }
+}
+
+void savepeople()                 /*存盘子程序*/
+{
+ int i;
+ for(i=1;i<max_data1;i++)
+ {
+  if(data1[i].num!=-1)
+  {
+   fprintf(data1_file,
+            "%d\t%d\t%d\t%s\t%d\t%s\t%s\t%d\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+            data1[i].num,
+            data1[i].specialnum,
+            data1[i].pass,
+            data1[i].company,
+            data1[i].address1num,
+            data1[i].address1,
+            data1[i].address2,
+            data1[i].propertynum,
+            data1[i].property,
+            data1[i].background,
+            data1[i].sex,
+            data1[i].old,
+            data1[i].ps,
+            data1[i].person,
+            data1[i].tel);
+  }
+ }
+}
+
+void savework()              /*存盘子程序*/
+{
+ int i;
+ for(i=1;i<max_data2;i++)
+ {
+  if(data2[i].num!=-1)
+  {
+   fprintf(data2_file,
+           "%d\t%d\t%d\t%s\t%d\t%s\t%s\t%d\t%s\t%d\t%s\t%d\t%s\t%d\t%s\t%s\n",
+           data2[i].num,
+           data2[i].specialnum,
+           data2[i].pass,
+           data2[i].name,
+           data2[i].address1num,
+           data2[i].address1,
+           data2[i].address2,
+           data2[i].propertynum,
+           data2[i].property,
+           data2[i].backgroundnum,
+           data2[i].background,
+           data2[i].sexnum,
+		  data2[i].sex,
+           data2[i].old,
+           data2[i].ps,
+           data2[i].tel);
+  }
+ }
+}
+
+void lookpeople()             /*核对账号和密码的子程序*/
+{
+ int a,b,i;
+ printf("请输入账号名称>");
+ scanf("%d",&a);
+ for(i=1;i<max_data1;i++)
+ {
+  if(a==data1[i].specialnum)
+  {
+   printf("请输入密码");
+   scanf("%d",&b);
+   if(b==data1[i].pass)
+   {
+    changepeople(i);
+   }
+   else
+   {
+	printf("密码错误,跳回主画面\n");
+	main();
+   }
+  }
+ }
+ printf("该账号并不存在,跳回主画面\n");
+ main();
+}
+
+void lookwork()                 /*核对账号和密码的子程序*/
+{
+ int a,b,i;
+ printf("请输入账号名称>");
+ scanf("%d",&a);
+ for(i=1;i<max_data2;i++)
+ {
+  if(a==data2[i].specialnum)
+  {
+   printf("请输入密码");
+   scanf("%d",&b);
+   if(b==data2[i].pass)
+   {
+    changework(i);
+   }
+   else
+   {
+	printf("密码错误,跳回主画面\n");
+	main();
+   }
+  }  
+ }
+ printf("该账号并不存在,跳回主画面\n");
+ main();
+}
+
+void compareaddress1num1(int x)              /*比较区域的子程序*/
+{
+ int i;
+ z=0;
+ for(i=1;i<=max_data1;i++)
+ {
+  if((data1[i].address1num)==x)
+  {
+   printfdata1(i);
+   stop();
+  }
+ }
+ search_data1();
+}
+
+void comparepropertynum1(int x1)             /*比较性质的子程序*/
+{
+ int i;
+ z=0;
+ for(i=1;i<=max_data1;i++)
+ {
+  if((data1[i].propertynum)==x1)
+  {
+   printfdata1(i);
+   stop();
+  }
+ }
+ search_data1();
+}
+
+void printfdata1(int x2)                    /*显示的子程序*/
+{
+ printf("==账号名称：%d=======================================================\n",data1[x2].specialnum);
+ printf("|公司名称：%s\n",data1[x2].company);
+ printf("|区域：%s\t        公司位置：%s\n",data1[x2].address1,data1[x2].address2);
+ printf("|工作性质：%s\t需要学历：%s\t性别限制：%s\n",data1[x2].property,data1[x2].background,data1[x2].sex);
+ printf("|年龄限制：%s\n",data1[x2].old);
+ printf("|其它说明：%s\n",data1[x2].ps);
+ printf("|联络人姓名：%s\t联络电话：%s\n",data1[x2].person,data1[x2].tel);
+ printf("==================================================================\n");
+}
+
+void compareaddress1num2(int y)                /*比较区域的子程序*/
+{
+ int i;
+ z=0;
+ for(i=1;i<=max_data2;i++)
+ {
+  if(y==data2[i].address1num)
+  {
+   printfdata2(i);
+   stop();
+  }
+ }
+ search_data2();
+}
+
+void comparepropertynum2(int y1)                /*比较专长的子程序*/
+{
+ int i;
+ z=0;
+ for(i=1;i<=max_data2;i++)
+ {
+  if(y1==data2[i].propertynum)
+  {
+   printfdata2(i);
+   stop();
+  }
+ }
+ search_data2();
+}
+
+void comparebackgroundnum(int y2)               /*比较学历的子程序*/
+{
+ int i;
+ z=0;
+ for(i=1;i<=max_data2;i++)
+ {
+  if(y2==data2[i].backgroundnum)
+  {
+   printfdata2(i);
+   stop();
+  }
+ }
+ search_data2();
+}
+
+void compareold(int y3)              /*比较年龄的子程序*/             
+{
+ int i;
+ z=0;
+ for(i=1;i<max_data2;i++)
+ {
+  if(y3<=data2[i].old)
+  {
+   printfdata2(i);
+   stop();
+  }
+ }
+ search_data2();
+}
+
+void comparesex(int y4)              /*比较性别的子程序*/
+{
+ int i;
+ z=0;
+ for(i=1;i<=max_data2;i++)
+ {
+  if(y4==data2[i].sexnum)
+  {
+   printfdata2(i);
+   stop();
+  }
+ }
+ search_data2();
+}
+
+
+void printfdata2(int y5)             /*显示的子程序*/
+{
+ printf("==账号名称：%d=======================================================\n",data2[y5].specialnum);
+ printf("|姓名：%s\n",data2[y5].name);
+ printf("|区域：%s\t        居住位置：%s\n",data2[y5].address1,data2[y5].address2);
+ printf("|专长：%s\t学历：%s\t性别：%s\n",data2[y5].property,data2[y5].background,data2[y5].sex);
+ printf("|年龄：%d\n",data2[y5].old);
+ printf("|其它说明：%s\n",data2[y5].ps);
+ printf("|联络电话：%s\n",data2[y5].tel);
+ printf("==================================================================\n");
+}
+
+五、程序执行范例
+
+以人才部分为例:
+一开始程序会显示出求职人才系统的主选单：
+  
+**************
+*求职人才系统*
+**************
+[1]登录人才数据
+[2]登录求职数据
+[3]修改人才数据
+[4]修改求职数据
+[5]搜寻工作
+[6]搜寻人才
+[7]其它
+[8]离开
+输入选项>_
+
+首先，新增1笔数据：
+输入选项> 1
+请输入账号名称(限用数字)> 111
+请输入密码(限用数字)> 1234567
+请输入公司名称>电机事务所
+请输入公司所在区域代码[1]北部[2]中部[3]南部[4]西部[5]东部>2
+请输入公司住址>宁波鄞州区
+请输入公司性质代码[1]劳动业[2]服务业[3]信息业[4]医疗业[5]其它>3
+请输入需要的学历>大学以上
+请输入性别限制>无
+请输入年龄限制>无
+请输入其它额外说明的数据>无
+请输入联络人姓名>大大
+请输入联络人电话>3939889
+
+接下来，我们搜寻这笔数据：
+**************
+*求职人才系统*
+**************
+[1]登录人才数据
+[2]登录求职数据
+[3]修改人才数据
+[4]修改求职数据
+[5]搜寻工作
+[6]搜寻人才
+[7]其它
+[8]离开
+输入选项>5
+请问你要以哪种条件来搜寻
+[1]公司位置
+[2]公司型态
+[3]返回主画面
+输入选项>2
+请问你要何种性质的公司
+[1]劳动业
+[2]服务业
+[3]信息业
+[4]医疗业
+[5]其它
+输入选项>3
+==账号名称：111=======================================================
+|公司名称：电机事务所
+|区域：中部             公司位置：宁波鄞州区
+|工作性质：信息业       需要学历：大学以上      性别限制：无
+|年龄限制：无
+|其它说明：无
+|联络人姓名：大大   联络电话：3939889
+==================================================================
+输入[1]继续执行,输入[2]回主画面>_
+即为刚刚新增的数据
+
+接下来，我们修改这一笔数据：
+输入[1]继续执行,输入[2]回主画面>1
+**************
+*求职人才系统*
+**************
+[1]登录人才数据
+[2]登录求职数据
+[3]修改人才数据
+[4]修改求职数据
+[5]搜寻工作
+[6]搜寻人才
+[7]其它
+[8]离开
+输入选项>3
+请输入账号名称> 111
+请输入密码> 1234567
+==账号名称：111=======================================================
+|[1]密码:1234567
+|[2]公司名称：电机事务所
+|[3]区域：中部          [4]公司位置：宁波鄞州区
+|[5]工作性质：信息业    [6]需要学历：大学以上   [7]性别限制：无
+|[8]年龄限制：无
+|[9]其它说明：无
+|[10]联络人姓名：大大       [11]联络电话：3939889
+==================================================================
+请问你要修改何项数据[1]~[11],回主画面[12]>3
+请输入公司所在区域代码[1]北部[2]中部[3]南部[4]西部[5]东部>1
+==账号名称：111=======================================================
+|[1]密码:1234567
+|[2]公司名称：电机事务所
+|[3]区域：北部          [4]公司位置：宁波鄞州区
+|[5]工作性质：信息业    [6]需要学历：大学以上   [7]性别限制：无
+|[8]年龄限制：无
+|[9]其它说明：无
+|[10]联络人姓名：大大       [11]联络电话：3939889
+==================================================================
+请问你要修改何项数据[1]~[11],回主画面[12]>_
+如上所示,数据会再一次显示,已确定区域的部分修改完成了
+
+六、完整的程序代码
+  程序的开始部分：
+  
+#include <stdio.h>
+#include <string.h>
+
+#define max_data1 200
+#define max_data2 200
+
+typedef struct           /*职业资料*/
+{
+ int num;                /*编号*/
+ int specialnum;         /*账号*/
+ int pass;               /*密码*/
+ char company[50];       /*公司名称*/
+ int address1num;        /*位置代码*/
+ char address1[50];      /*公司位置*/
+ char address2[50];      /*公司地址*/
+ int propertynum;        /*性质代码*/
+ char property[50];      /*公司性质*/
+ char background[50];    /*需要学历*/
+ char sex[50];           /*性别限制*/
+ char old[50];           /*年龄限制*/
+ char ps[50];            /*其它说明*/
+ char person[50];        /*联络人*/
+ char tel[10];           /*联络人电话*/
+}PEOPLE;
+
+typedef struct           /*人才资料*/
+{
+ int num;                /*编号*/
+ int specialnum;         /*账号*/
+ int pass;               /*密码*/
+ char name[50];          /*姓名*/
+ int address1num;        /*位置代码*/
+ char address1[50];      /*位置*/
+ char address2[50];      /*住址*/
+ int propertynum;        /*专长代码*/
+ char property[50];      /*专长*/
+ int backgroundnum;      /*学历代码*/
+ char background[50];    /*学历*/
+ int sexnum;             /*性别代号*/
+ char sex[50];           /*性别*/
+ int old;                /*年龄*/
+ char ps[50];            /*其它说明*/
+ char tel[10];           /*联络电话*/
+}WORK;
+
+PEOPLE data1[max_data1];
+FILE *data1_file,*data2_file;
+WORK data2[max_data2];
+int z;
+
+void init1();                          /*初始化子程序*/
+void init2();                          /*初始化子程序*/
+void read_data1();                     /*读文件子程序*/
+void read_data2();                     /*读文件子程序*/
+void addpeople();                      /*新增征才数据子程序*/
+void savepeople();                     /*存盘子程序*/
+void addwork();                        /*新增求职数据子程序*/
+void savework();                       /*存盘子程序*/
+void lookpeople();                     /*核对账号和密码的子程序*/
+void changepeople(int z1);             /*更改数据子程序*/
+void lookwork();                       /*核对账号和密码的子程序*/
+void changework(int z2);               /*更改数据子程序*/
+void search_data1();                   /*搜寻的子程序*/
+void compareaddress1num1(int x);       /*比较区域的子程序*/
+void comparepropertynum1(int x1);      /*比较性质的子程序*/
+void printfdata1(int x2);              /*显示的子程序*/
+void search_data2();                   /*搜寻的子程序*/
+void compareaddress1num2(int y);       /*比较区域的子程序*/
+void comparepropertynum2(int y1);      /*比较专长的子程序*/
+void comparebackgroundnum(int y2);     /*比较学历的子程序*/
+void compareold(int y3);               /*比较年龄的子程序*/
+void comparesex(int y4);               /*比较性别的子程序*/
+void printfdata2(int y5);              /*显示的子程序*/
+void stop();                           /*间断的子程序*/
+void other();                          /*其它的子程序*/
+
